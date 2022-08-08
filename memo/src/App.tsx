@@ -47,10 +47,12 @@ export const App = () => {
       <div>
         <h1>メモアプリ</h1>
         <input type="text" value={text} onChange={onChangeInput}/>
-        <SButton onClick={onclickAdd}>メモする</SButton>
+        <SButton disabled={!text} onClick={onclickAdd}>メモする</SButton>
       </div>
       <MemoList memos={memos} onCkickDelete={onCkickDelete}/>
       <PastMemo pastMemos={pastMemos}/>
     </>
   )
+
+  // disabled 'text'に文字があれば true → false、文字がなければ false → true に変わる。 disabled は true ならボタンが押せなくなる。
 }
