@@ -1,14 +1,23 @@
-import React, { ChangeEvent, useState } from 'react';
-import styled from "styled-components"
+import React, { ChangeEvent, useCallback, useState } from 'react';
+import styled from "styled-components";
 import './index.css';
+
+import { MemoList } from './compornents/MemoList';
+import { PastMemo } from './compornents/PastMemo';
 
 
 export const App = () => {
+  const [text, setText] = useState<string>("");
+  const [memos , setMemos] = useState<string[]>([]);
+  const [pastMemos, setPastMemo] = useState<string[]>([]);
+
   const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
+    // input エリアの値を取得するロジック
     setText(e.target.value)
   }
 
   const onclickAdd = (): void => {
+    // メモを追加するロジック
     const newMemos = [...memos];
     newMemos.push(text);
 
@@ -16,31 +25,23 @@ export const App = () => {
     setText('');
   }
 
-  const onCkickDelete = (index: number): void => {
+  const onCkickDelete = useCallback((index: number): void => {
+    // メモ欄から削除するロジック
     const newMemos = [...memos];
-    newMemos.splice(index, 1)
+    newMemos.splice(index, 1);
     setMemos(newMemos);
-  }
 
-  const [text, setText] = useState<string>("");
-  const [memos , setMemos] = useState<string[]>([]);
+    // 過去のメモ欄に追加するロジック
+    const newPastMemo = [...pastMemos, memos[index]]
+    setPastMemo(newPastMemo);
+  }, [memos])
 
   // styled-components
   const SButton = styled.button`
     margin-left: 16px;
   `
-
-  const SContainer = styled.div`
-    border: solid 1px #ccc;
-    padding: 16px;
-    margin: 8px;
-  `
-
-  const SMemoWrapper = styled.div`
-    display: flex;
-    align-items: center;
-  `
   //
+
   return (
     <>
       <div>
@@ -48,19 +49,8 @@ export const App = () => {
         <input type="text" value={text} onChange={onChangeInput}/>
         <SButton onClick={onclickAdd}>メモする</SButton>
       </div>
-      <SContainer>
-        <h2>メモ一覧</h2>
-        <ul>
-          {memos.map((memo: string, index: number) => (
-            <li key={index}>
-              <SMemoWrapper>
-                <p>{memo}</p>
-                <SButton onClick={() => onCkickDelete(index)}>削除</SButton>
-              </SMemoWrapper>
-            </li>
-          ))}
-        </ul>
-      </SContainer>
+      <MemoList memos={memos} onCkickDelete={onCkickDelete}/>
+      <PastMemo pastMemos={pastMemos}/>
     </>
   )
 }
