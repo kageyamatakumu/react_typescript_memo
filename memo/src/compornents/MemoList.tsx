@@ -1,17 +1,19 @@
 import React, { memo } from 'react';
 import styled from "styled-components";
 
+import { Memo } from './Memo';
+
 
 // props の型定義
 type Props = {
     memos: string[];
-    onCkickDelete: (index: number) => void;
+    onClickDelete: (index: number) => void;
 }
 //
 
 export const MemoList= memo((props: Props) => {
 
-    const {memos, onCkickDelete} = props;
+    const { memos, onClickDelete } = props;
 
 
     // styled-components
@@ -35,14 +37,13 @@ export const MemoList= memo((props: Props) => {
             <SContainer>
                 <h2>メモ一覧</h2>
                 <ul>
-                    {memos.map((memo: string, index: number) => (
-                        <li key={index}>
+                    { memos.map((memo: string, index: number) => (
+                        <li key={ index }>
                         <SMemoWrapper>
-                            <p>{memo}</p>
-                            <SButton onClick={() => onCkickDelete(index)}>削除</SButton>
+                            <Memo memo={ memo } index={ index } onClickDelete={ onClickDelete } />
                         </SMemoWrapper>
                         </li>
-                    ))}
+                    )) }
                 </ul>
             </SContainer>
         </>
