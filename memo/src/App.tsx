@@ -25,14 +25,14 @@ export const App = () => {
     setText('');
   }
 
-  const onCkickDelete = useCallback((index: number): void => {
+  const onClickDelete = useCallback((index: number): void => {
     // メモ欄から削除するロジック
     const newMemos = [...memos];
     newMemos.splice(index, 1);
     setMemos(newMemos);
 
-    // 過去のメモ欄に追加するロジック
-    const newPastMemo = [...pastMemos, memos[index]]
+  // 過去のメモ欄に追加するロジック
+  const newPastMemo = [...pastMemos, memos[index]]
     setPastMemo(newPastMemo);
   }, [memos])
 
@@ -46,11 +46,11 @@ export const App = () => {
     <>
       <div>
         <h1>メモアプリ</h1>
-        <input type="text" value={text} onChange={onChangeInput}/>
-        <SButton disabled={!text} onClick={onclickAdd}>メモする</SButton>
+        <input type="text" value={ text } onChange={ onChangeInput }/>
+        <SButton disabled={ !text } onClick={ onclickAdd }>メモする</SButton>
       </div>
-      <MemoList memos={memos} onCkickDelete={onCkickDelete}/>
-      <PastMemo pastMemos={pastMemos}/>
+      <MemoList memos={ memos } onClickDelete={ onClickDelete }/>
+      <PastMemo pastMemos={ pastMemos }/>
     </>
   )
 

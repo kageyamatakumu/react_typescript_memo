@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import styled from "styled-components";
 
 // props の型定義
@@ -7,7 +7,7 @@ type Props = {
 }
 //
 
-export const PastMemo = (props: Props) => {
+export const PastMemo = memo((props: Props) => {
     const { pastMemos } = props;
 
     // styled-components
@@ -19,14 +19,14 @@ export const PastMemo = (props: Props) => {
     //
     return(
         <>
-        <SContainer>
-            <h1>過去のメモ</h1>
-            {pastMemos.map((memo: string, index: number) => (
-                <li key={index}>
-                    {memo}
-                </li>
-            ))}
-        </SContainer>
+            <SContainer>
+                <h1>過去のメモ</h1>
+                { pastMemos.map((memo: string, index: number) => (
+                    <li key={ index }>
+                        { memo }
+                    </li>
+                )) }
+            </SContainer>
         </>
     )
-}
+})
