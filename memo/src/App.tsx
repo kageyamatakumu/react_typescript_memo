@@ -1,15 +1,19 @@
-import React, { ChangeEvent, useCallback, useState } from 'react';
+import React, { ChangeEvent, useCallback, useState, useContext } from 'react';
 import styled from "styled-components";
 import './index.css';
 
 import { MemoList } from './compornents/MemoList';
 import { PastMemo } from './compornents/PastMemo';
+import { MemoContentContext } from './compornents/providers/MemoProvider';
+
+
 
 
 export const App = () => {
   const [text, setText] = useState<string>("");
-  const [memos , setMemos] = useState<string[]>([]);
   const [pastMemos, setPastMemo] = useState<string[]>([]);
+
+  const { memos, setMemos } = useContext(MemoContentContext)
 
   const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
     // input エリアの値を取得するロジック
