@@ -13,7 +13,8 @@ export const App = () => {
   const [text, setText] = useState<string>("");
   const [pastMemos, setPastMemo] = useState<string[]>([]);
 
-  const { memos, setMemos } = useContext(MemoContentContext)
+  // グローバルなState管理 メモ一覧
+  const { memos, setMemos } = useContext(MemoContentContext);
 
   const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
     // input エリアの値を取得するロジック

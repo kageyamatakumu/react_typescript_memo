@@ -21,9 +21,6 @@ export const MemoList= memo((props: Props) => {
         display: flex;
         align-items: center;
     `
-    const SButton = styled.button`
-    margin-left: 16px;
-    `
 
     const SContainer = styled.div`
     border: solid 1px #ccc;

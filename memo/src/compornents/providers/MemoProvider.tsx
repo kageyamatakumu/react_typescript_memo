@@ -15,7 +15,7 @@ export const MemoProvider = (props: Props) => {
     const [memos, setMemos] = useState<string[]>([]);
 
     return(
-        <MemoContentContext.Provider value={{memos, setMemos}}>
+        <MemoContentContext.Provider value={ { memos, setMemos } }>
             { children }
         </MemoContentContext.Provider>
     )
