@@ -5,13 +5,21 @@ import './index.css';
 import { MemoList } from './compornents/MemoList';
 import { PastMemo } from './compornents/PastMemo';
 import { MemoContentContext } from './compornents/providers/MemoProvider';
+import axios from 'axios';
+import { Todos } from './compornents/Todos';
 
 
 
+type Todos = {
+  userId: number;
+  title: string;
+  completed: boolean;
+}
 
 export const App = () => {
   const [text, setText] = useState<string>("");
   const [pastMemos, setPastMemo] = useState<string[]>([]);
+  const [todos, setTodos] = useState<Array<Todos>>([])
 
   // グローバルなState管理 メモ一覧
   const { memos, setMemos } = useContext(MemoContentContext);
@@ -41,6 +49,12 @@ export const App = () => {
     setPastMemo(newPastMemo);
   }, [memos])
 
+
+  const onClickFetchTodos = () => {
+    axios.get<Array<Todos>>("https://jsonplaceholder.typicode.com/todos")
+    .then((result) => { setTodos(result.data) })
+  }
+
   // styled-components
   const SButton = styled.button`
     margin-left: 16px;
@@ -56,6 +70,15 @@ export const App = () => {
       </div>
       <MemoList memos={ memos } onClickDelete={ onClickDelete }/>
       <PastMemo pastMemos={ pastMemos }/>
+
+      <h1>外部API 情報取得</h1>
+      <button onClick={onClickFetchTodos}>jsonplaceholder todo情報取得</button>
+      {todos.length != 0 ?
+        todos.map((todo) => (
+          <Todos userId={todo.userId} title={todo.title} completed={todo.completed} />
+        ))
+        :
+        <p>何もとってない</p>}
     </>
   )
 
