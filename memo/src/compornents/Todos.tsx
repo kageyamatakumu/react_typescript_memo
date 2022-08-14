@@ -1,13 +1,9 @@
-import React from 'react'
+import React from 'react';
 
-type Todos = {
-    userId: number;
-    title: string;
-    completed?: boolean;
-}
+import type { TypeTodos } from '../types/TypeTodos';
 
-export const Todos = (props: Todos ) => {
-    const { userId, title, completed = false} = props;
+export const Todos = (props: TypeTodos ) => {
+    const { userId, title, completed = false } = props;
     return (
         <div>
             <ul>

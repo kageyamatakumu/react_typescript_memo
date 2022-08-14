@@ -47,6 +47,10 @@ export const Memo = memo((props: Props) => {
     const SButton = styled.button`
         margin-left: 16px;
     `
+
+    const Sp = styled.p`
+        cursor: pointer;
+    `
     //
     return(
         <>
@@ -57,7 +61,7 @@ export const Memo = memo((props: Props) => {
             </div>
             :
             <div>
-                <p onClick={handleClick}>{ memo }</p>
+                <Sp onClick={handleClick}>{ memo }</Sp>
                 <SButton onClick={ () => onClickDelete(index) }>削除</SButton>
             </div>
             }
