@@ -1,20 +1,22 @@
-import React, { ChangeEvent, useCallback, useState, useContext } from 'react';
+import React, { ChangeEvent, useState, useContext } from 'react';
 import styled from "styled-components";
 import './index.css';
 
+// コンポーネント
 import { MemoList } from './compornents/MemoList';
 import { PastMemo } from './compornents/PastMemo';
 import { MemoContentContext } from './compornents/providers/MemoProvider';
-import axios from 'axios';
 import { Todos } from './compornents/Todos';
 
-import type { TypeTodos } from './types/TypeTodos';
-
+// カスタムフック
+import { useFetchUsers } from './hooks/useFetchUsers'
 
 export const App = () => {
   const [text, setText] = useState<string>("");
   const [pastMemos, setPastMemo] = useState<string[]>([]);
-  const [todos, setTodos] = useState<Array<TypeTodos>>([])
+
+  // カスタムフック（Todoリストを取得）
+  const { todos, onClickFetchTodos } = useFetchUsers();
 
   // グローバルなState管理 メモ一覧
   const { memos, setMemos } = useContext(MemoContentContext);
@@ -33,7 +35,7 @@ export const App = () => {
     setText('');
   }
 
-  const onClickDelete = useCallback((index: number): void => {
+  const onClickDelete = (index: number): void => {
     // メモ欄から削除するロジック
     const newMemos = [...memos];
     newMemos.splice(index, 1);
@@ -42,12 +44,6 @@ export const App = () => {
   // 過去のメモ欄に追加するロジック
   const newPastMemo = [...pastMemos, memos[index]]
     setPastMemo(newPastMemo);
-  }, [memos])
-
-
-  const onClickFetchTodos = () => {
-    axios.get<Array<TypeTodos>>("https://jsonplaceholder.typicode.com/todos")
-    .then((result) => { setTodos(result.data) })
   }
 
   // styled-components
@@ -68,7 +64,7 @@ export const App = () => {
 
       <h1>外部API 情報取得</h1>
       <button onClick={onClickFetchTodos}>todo情報取得</button>
-      {todos.length != 0 ?
+      {todos.length !== 0 ?
         todos.map((todo) => (
           <Todos userId={ todo.userId } title={ todo.title } completed={ todo.completed } />
         ))
