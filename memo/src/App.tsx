@@ -42,8 +42,19 @@ export const App = () => {
     setMemos(newMemos);
 
   // 過去のメモ欄に追加するロジック
-  const newPastMemo = [...pastMemos, memos[index]]
+    const newPastMemo = [...pastMemos, memos[index]];
     setPastMemo(newPastMemo);
+  }
+
+  const onClickBuck = (index: number): void => {
+    // 過去のメモ欄から削除するロジック
+    const newPastMemo = [...pastMemos];
+    newPastMemo.splice(index, 1);
+    setPastMemo(newPastMemo);
+
+    // メモ欄に戻すロジック
+    const newMemos = [...memos, pastMemos[index]];
+    setMemos(newMemos);
   }
 
   // styled-components
@@ -60,10 +71,10 @@ export const App = () => {
         <SButton disabled={ !text } onClick={ onclickAdd }>メモする</SButton>
       </div>
       <MemoList memos={ memos } onClickDelete={ onClickDelete }/>
-      <PastMemo pastMemos={ pastMemos }/>
+      <PastMemo pastMemos={ pastMemos } onClickBuck={ onClickBuck }/>
 
       <h1>外部API 情報取得</h1>
-      <button onClick={onClickFetchTodos}>todo情報取得</button>
+      <button onClick={ onClickFetchTodos }>todo情報取得</button>
       {todos.length !== 0 ?
         todos.map((todo) => (
           <Todos userId={ todo.userId } title={ todo.title } completed={ todo.completed } />
