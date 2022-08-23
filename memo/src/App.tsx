@@ -1,5 +1,6 @@
 import React, { ChangeEvent, useState, useContext } from 'react';
 import styled from "styled-components";
+import { animateScroll as scroll } from "react-scroll";
 import './index.css';
 
 // コンポーネント
@@ -57,6 +58,27 @@ export const App = () => {
     setMemos(newMemos);
   }
 
+  // TOPに移動する
+  const onClickTop = (): void => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
+  const scrollToTop = () => {
+    scroll.scrollToTop();
+  };
+
+  // Bottomに移動する
+  const scrollToBottom = () => {
+    scroll.scrollToBottom();
+  };
+
+  const scrollToMore = () => {
+    scroll.scrollMore(100);
+  }
+
   // styled-components
   const SButton = styled.button`
     margin-left: 16px;
@@ -73,14 +95,21 @@ export const App = () => {
       <MemoList memos={ memos } onClickDelete={ onClickDelete }/>
       <PastMemo pastMemos={ pastMemos } onClickBuck={ onClickBuck }/>
 
-      <h1>外部API 情報取得</h1>
+      <h1 id="question">外部API 情報取得</h1>
       <button onClick={ onClickFetchTodos }>todo情報取得</button>
-      {todos.length !== 0 ?
-        todos.map((todo) => (
-          <Todos userId={ todo.userId } title={ todo.title } completed={ todo.completed } />
-        ))
+      <button onClick={ scrollToBottom }>一番下に</button>
+      <button onClick={ scrollToMore }>少し下に</button>
+      { todos.length !== 0 ?
+        <div>
+          {todos.map((todo) => (
+            <Todos userId={ todo.userId } title={ todo.title } completed={ todo.completed } />
+          ))}
+          <button onClick = { onClickTop }>TOPに戻す</button>
+          <button onClick = { scrollToTop }>TOPに戻す(ライブラリ使用)</button>
+        </div>
         :
-        <p>何もとってない</p>}
+        <p>何もとってない</p>
+      }
     </>
   )
 
