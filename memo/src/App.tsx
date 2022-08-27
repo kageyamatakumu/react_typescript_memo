@@ -17,7 +17,14 @@ export const App = () => {
   const [pastMemos, setPastMemo] = useState<string[]>([]);
 
   // カスタムフック（Todoリストを取得）
-  const { todos, onClickFetchTodos } = useFetchUsers();
+  const { todos, setTodos, onClickFetchTodos } = useFetchUsers();
+
+  // Todoリストを削除
+  const onClickDeleteTodos = (): void => {
+    const newTodos = [...todos];
+    newTodos.splice(0);
+    setTodos(newTodos);
+  }
 
   // グローバルなState管理 メモ一覧
   const { memos, setMemos } = useContext(MemoContentContext);
@@ -66,16 +73,17 @@ export const App = () => {
     });
   }
 
-  const scrollToTop = () => {
+  // ライブラリを使ったスクロール機能
+  const scrollToTop = (): void => {
     scroll.scrollToTop();
   };
 
   // Bottomに移動する
-  const scrollToBottom = () => {
+  const scrollToBottom = (): void => {
     scroll.scrollToBottom();
   };
 
-  const scrollToMore = () => {
+  const scrollToMore = (): void => {
     scroll.scrollMore(100);
   }
 
@@ -96,7 +104,10 @@ export const App = () => {
       <PastMemo pastMemos={ pastMemos } onClickBuck={ onClickBuck }/>
 
       <h1 id="question">外部API 情報取得</h1>
-      <button onClick={ onClickFetchTodos }>todo情報取得</button>
+      { todos.length !== 0 ?
+        <button onClick={ onClickDeleteTodos }>何もない</button> :
+        <button onClick={ onClickFetchTodos }>todo情報取得</button>
+      }
       <button onClick={ scrollToBottom }>一番下に</button>
       <button onClick={ scrollToMore }>少し下に</button>
       { todos.length !== 0 ?

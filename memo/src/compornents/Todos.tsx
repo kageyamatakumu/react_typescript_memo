@@ -7,7 +7,7 @@ export const Todos = (props: TypeTodos ) => {
     return (
         <div>
             <ul>
-                <li>
+                <li style={completed ? { background: "#ffe4e1" } : { background: "#c7fff9" } }>
                     {`ユーザーID：${userId}`}
                     <br/>
                     {`やること：${title}`}
