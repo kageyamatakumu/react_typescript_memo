@@ -11,5 +11,5 @@ export const useFetchUsers = () => {
         .then((result) => { setTodos(result.data) })
     }
 
-    return { todos, onClickFetchTodos };
+    return { todos, setTodos, onClickFetchTodos };
 }
