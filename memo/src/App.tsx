@@ -1,126 +1,38 @@
-import React, { ChangeEvent, useState, useContext } from 'react';
-import styled from "styled-components";
-import { animateScroll as scroll } from "react-scroll";
+import React from 'react';
+import { Routes, Route, NavLink, useNavigate } from 'react-router-dom';
 import './index.css';
 
 // コンポーネント
-import { MemoList } from './compornents/MemoList';
-import { PastMemo } from './compornents/PastMemo';
-import { MemoContentContext } from './compornents/providers/MemoProvider';
-import { Todos } from './compornents/Todos';
+import { MemoArea } from './compornents/main/MemoArea ';
+import { ToDoArea } from './compornents/main/ToDoArea';
+import { Home }from './compornents/main/Home';
 
-// カスタムフック
-import { useFetchUsers } from './hooks/useFetchUsers'
 
 export const App = () => {
-  const [text, setText] = useState<string>("");
-  const [pastMemos, setPastMemo] = useState<string[]>([]);
-
-  // カスタムフック（Todoリストを取得）
-  const { todos, setTodos, onClickFetchTodos } = useFetchUsers();
-
-  // Todoリストを削除
-  const onClickDeleteTodos = (): void => {
-    const newTodos = [...todos];
-    newTodos.splice(0);
-    setTodos(newTodos);
-  }
-
-  // グローバルなState管理 メモ一覧
-  const { memos, setMemos } = useContext(MemoContentContext);
-
-  const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
-    // input エリアの値を取得するロジック
-    setText(e.target.value)
-  }
-
-  const onclickAdd = (): void => {
-    // メモを追加するロジック
-    const newMemos = [...memos];
-    newMemos.push(text);
-
-    setMemos(newMemos);
-    setText('');
-  }
-
-  const onClickDelete = (index: number): void => {
-    // メモ欄から削除するロジック
-    const newMemos = [...memos];
-    newMemos.splice(index, 1);
-    setMemos(newMemos);
-
-  // 過去のメモ欄に追加するロジック
-    const newPastMemo = [...pastMemos, memos[index]];
-    setPastMemo(newPastMemo);
-  }
-
-  const onClickBuck = (index: number): void => {
-    // 過去のメモ欄から削除するロジック
-    const newPastMemo = [...pastMemos];
-    newPastMemo.splice(index, 1);
-    setPastMemo(newPastMemo);
-
-    // メモ欄に戻すロジック
-    const newMemos = [...memos, pastMemos[index]];
-    setMemos(newMemos);
-  }
-
-  // TOPに移動する
-  const onClickTop = (): void => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  }
-
-  // ライブラリを使ったスクロール機能
-  const scrollToTop = (): void => {
-    scroll.scrollToTop();
-  };
-
-  // Bottomに移動する
-  const scrollToBottom = (): void => {
-    scroll.scrollToBottom();
-  };
-
-  const scrollToMore = (): void => {
-    scroll.scrollMore(100);
-  }
-
-  // styled-components
-  const SButton = styled.button`
-    margin-left: 16px;
-  `
-  //
-
+  // ボタンを使ったリンク作成
+  const navigate = useNavigate();
   return (
     <>
       <div>
-        <h1>メモアプリ</h1>
-        <input type="text" value={ text } onChange={ onChangeInput }/>
-        <SButton disabled={ !text } onClick={ onclickAdd }>メモする</SButton>
+        <ul>
+          <li>
+            <NavLink className={({ isActive }) => (isActive ? 'currentURL' : undefined)} to='/'>home</NavLink>
+          </li>
+          <li>
+            <NavLink className={({ isActive }) => (isActive ? 'currentURL' : undefined)} to='/memoarea'>メモエリア</NavLink>
+          </li>
+          <li>
+            <button onClick={() => navigate('/todoarea')} className={'button'}>ToDoエリア</button>
+          </li>
+        </ul>
       </div>
-      <MemoList memos={ memos } onClickDelete={ onClickDelete }/>
-      <PastMemo pastMemos={ pastMemos } onClickBuck={ onClickBuck }/>
-
-      <h1 id="question">外部API 情報取得</h1>
-      { todos.length !== 0 ?
-        <button onClick={ onClickDeleteTodos }>何もない</button> :
-        <button onClick={ onClickFetchTodos }>todo情報取得</button>
-      }
-      <button onClick={ scrollToBottom }>一番下に</button>
-      <button onClick={ scrollToMore }>少し下に</button>
-      { todos.length !== 0 ?
-        <div>
-          {todos.map((todo) => (
-            <Todos userId={ todo.userId } title={ todo.title } completed={ todo.completed } />
-          ))}
-          <button onClick = { onClickTop }>TOPに戻す</button>
-          <button onClick = { scrollToTop }>TOPに戻す(ライブラリ使用)</button>
-        </div>
-        :
-        <p>何もとってない</p>
-      }
+      <Routes>
+        <Route path="/" element={<Home />} />
+        {/* メモエリア */}
+        <Route path="/memoarea" element={<MemoArea/>} />
+        {/* タスク取得エリア */}
+        <Route path="/todoarea" element={<ToDoArea/>} />
+      </Routes>
     </>
   )
 
