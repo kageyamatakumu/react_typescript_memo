@@ -1,3 +1,14 @@
 body {
   margin: 0;
 }
+
+.currentURL{
+  color: blue;
+}
+
+.button{
+  outline: none;
+  border: none;
+  background-color: rgb(168, 214, 214);
+  cursor: pointer;
+}
